@@ -44,7 +44,7 @@
   when: ansible_facts['distribution'] == "CentOS"
 
 - name: (CentOS) Install flussonic apt packages
-  apt:
+  yum:
     name: "{{ item }}"
     state: latest
   with_items:
