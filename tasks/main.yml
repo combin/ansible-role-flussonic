@@ -104,7 +104,7 @@
   when: flussonic_crossdomain
 
 - name: Get Flussonic status
-  command: /etc/init.d/flussonic status
+  command: /bin/systemctl status flussonic
   register: flussonic_status
   ignore_errors: yes
 
