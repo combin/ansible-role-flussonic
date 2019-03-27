@@ -25,12 +25,11 @@
 
 - name: (Debian) Install flussonic apt packages
   apt:
-    name: "{{ item }}"
+    name:
+      - flussonic
+      - flussonic-ffmpeg
+      - flussonic-python
     state: latest
-  with_items:
-    - flussonic
-    - flussonic-ffmpeg
-    - flussonic-python
   when: ansible_facts['distribution'] == "Debian" or ansible_facts['distribution'] == "Ubuntu"
 
 - name: (CentOS) Add flussonic apt repository
@@ -45,13 +44,12 @@
 
 - name: (CentOS) Install flussonic apt packages
   yum:
-    name: "{{ item }}"
+    name:
+      - flussonic
+      - flussonic-erlang
+      - flussonic-ffmpeg
+      - flussonic-python
     state: latest
-  with_items:
-    - flussonic
-    - flussonic-erlang
-    - flussonic-ffmpeg
-    - flussonic-python
   when: ansible_facts['distribution'] == "CentOS"
 
 - name: Make sure flussonic system user exists
