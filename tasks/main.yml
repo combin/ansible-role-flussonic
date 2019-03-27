@@ -10,18 +10,20 @@
   become: false
   when: s3_create_bucket
 
-- name: Add flussonic apt repository key
+- name: (Debian) Add flussonic apt repository key
   apt_key:
     url: 'http://debian.erlyvideo.org/binary/gpg.key'
     state: present
+  when: ansible_facts['distribution'] == "Debian" or ansible_facts['distribution'] == "Ubuntu"
 
-- name: Add flussonic apt repository
+- name: (Debian) Add flussonic apt repository
   apt_repository:
     repo: 'deb http://debian.erlyvideo.org binary/'
     update_cache: yes
     state: present
+  when: ansible_facts['distribution'] == "Debian" or ansible_facts['distribution'] == "Ubuntu"
 
-- name: Install flussonic apt packages
+- name: (Debian) Install flussonic apt packages
   apt:
     name: "{{ item }}"
     state: latest
@@ -29,6 +31,28 @@
     - flussonic
     - flussonic-ffmpeg
     - flussonic-python
+  when: ansible_facts['distribution'] == "Debian" or ansible_facts['distribution'] == "Ubuntu"
+
+- name: (CentOS) Add flussonic apt repository
+  yum_repository:
+    name: Flussonic
+    description: Flussonic repocitory
+    file: flussonic
+    baseurl: http://apt.flussonic.com/rpm
+    gpgcheck: no
+    enabled: yes
+  when: ansible_facts['distribution'] == "CentOS"
+
+- name: (CentOS) Install flussonic apt packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - flussonic
+    - flussonic-erlang
+    - flussonic-ffmpeg
+    - flussonic-python
+  when: ansible_facts['distribution'] == "CentOS"
 
 - name: Make sure flussonic system user exists
   user:
